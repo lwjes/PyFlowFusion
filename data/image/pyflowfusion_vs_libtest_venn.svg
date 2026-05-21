@@ -1,0 +1,63 @@
+<svg width="1500" height="980" viewBox="0 0 1500 980" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font: 700 32px 'Noto Sans SC', 'Microsoft YaHei', sans-serif; fill: #111111; }
+      .subtitle { font: 20px 'Noto Sans SC', 'Microsoft YaHei', sans-serif; fill: #111111; }
+      .label { font: 700 28px 'Noto Sans SC', 'Microsoft YaHei', sans-serif; fill: #111111; }
+      .region { font: 700 24px 'Noto Sans SC', 'Microsoft YaHei', sans-serif; fill: #111111; }
+      .num { font: 700 32px 'Noto Sans SC', 'Microsoft YaHei', sans-serif; fill: #111111; }
+      .pct { font: 22px 'Noto Sans SC', 'Microsoft YaHei', sans-serif; fill: #111111; }
+      .note { font: 18px 'Noto Sans SC', 'Microsoft YaHei', sans-serif; fill: #111111; }
+      .frame { fill: #FFFFFF; stroke: #111111; stroke-width: 2.2; }
+      .circle-left { fill: #F2F2F2; stroke: #111111; stroke-width: 3; }
+      .circle-right { fill: #FFFFFF; stroke: #111111; stroke-width: 3; }
+      .overlap { fill: #D9D9D9; stroke: #111111; stroke-width: 2; }
+      .line { stroke: #111111; stroke-width: 2; }
+    </style>
+    <clipPath id="leftClip">
+      <circle cx="610" cy="460" r="240"/>
+    </clipPath>
+    <clipPath id="rightClip">
+      <circle cx="890" cy="460" r="240"/>
+    </clipPath>
+  </defs>
+
+  <rect x="1" y="1" width="1498" height="978" class="frame"/>
+  <text x="750" y="62" text-anchor="middle" class="title">PyFlowFusion 与 Lib/test 覆盖率韦恩图</text>
+  <text x="750" y="102" text-anchor="middle" class="subtitle">统一口径：基于 gcovr XML 的逐行比较；全集为当前可比的 305,516 行有效代码</text>
+
+  <rect x="110" y="150" width="1280" height="700" class="frame"/>
+
+  <circle cx="610" cy="460" r="240" class="circle-left"/>
+  <circle cx="890" cy="460" r="240" class="circle-right"/>
+  <g clip-path="url(#leftClip)">
+    <circle cx="890" cy="460" r="240" class="overlap"/>
+  </g>
+
+  <text x="470" y="230" text-anchor="middle" class="label">Lib/test</text>
+  <text x="1030" y="230" text-anchor="middle" class="label">PyFlowFusion</text>
+
+  <text x="430" y="430" text-anchor="middle" class="region">仅 Lib/test 覆盖</text>
+  <text x="430" y="478" text-anchor="middle" class="num">53,874</text>
+  <text x="430" y="516" text-anchor="middle" class="pct">17.63%</text>
+
+  <text x="750" y="410" text-anchor="middle" class="region">二者都能覆盖</text>
+  <text x="750" y="458" text-anchor="middle" class="num">187,991</text>
+  <text x="750" y="496" text-anchor="middle" class="pct">61.53%</text>
+
+  <text x="1070" y="430" text-anchor="middle" class="region">仅 PyFlowFusion 覆盖</text>
+  <text x="1070" y="478" text-anchor="middle" class="num">437</text>
+  <text x="1070" y="516" text-anchor="middle" class="pct">0.14%</text>
+
+  <rect x="380" y="650" width="740" height="120" class="frame"/>
+  <text x="750" y="694" text-anchor="middle" class="region">二者都未覆盖</text>
+  <text x="750" y="734" text-anchor="middle" class="num">63,214</text>
+  <text x="750" y="764" text-anchor="middle" class="pct">20.69%</text>
+
+  <line x1="750" y1="610" x2="750" y2="650" class="line"/>
+  <line x1="750" y1="610" x2="720" y2="580" class="line"/>
+  <line x1="750" y1="610" x2="780" y2="580" class="line"/>
+
+  <text x="110" y="896" class="note">注1：图中“能覆盖”与“未覆盖”仅针对本次 PyFlowFusion 最终快照与本次默认 unittest 运行，不表示代码的理论永久可达性。</text>
+  <text x="110" y="932" class="note">注2：交集区域反映解释器核心共享执行路径；左侧差异区主要对应官方测试的模块 API 与边界枚举；右侧差异区主要对应动态运行时异常与边界输入路径。</text>
+</svg>

@@ -1,0 +1,47 @@
+# Python cache / env
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.venv/
+venv/
+env/
+
+# Local markers
+.codex
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Runtime workspace
+workspace/
+
+# Benchmark outputs
+benchmarks/libfuzzer_cov/bin/
+benchmarks/libfuzzer_cov/corpus/
+benchmarks/libfuzzer_cov/corpus_seed_from_libtest/
+benchmarks/libfuzzer_cov/logs/
+benchmarks/libfuzzer_cov/meta/
+benchmarks/libfuzzer_cov/python-cov/
+benchmarks/libfuzzer_cov/artifacts/
+benchmarks/libfuzzer_cov/*.zip
+benchmarks/libfuzzer_cov/*.csv
+benchmarks/libfuzzer_cov/*.txt
+benchmarks/libfuzzer_test/bin/
+benchmarks/libfuzzer_test/results/
+benchmarks/libfuzzer_test/python_cov/
+
+# Generated knowledge databases
+knowledges/*.db
+knowledges/*.db-journal
+knowledges/*.sqlite
+knowledges/*.sqlite3
+
+# Logs
+*.log
+*.nohup.log

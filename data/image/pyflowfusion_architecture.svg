@@ -1,0 +1,148 @@
+<svg width="1600" height="980" viewBox="0 0 1600 980" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="980" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F7FAFC"/>
+      <stop offset="1" stop-color="#EEF3F8"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#0F172A" flood-opacity="0.10"/>
+    </filter>
+    <marker id="arrow" markerWidth="14" markerHeight="14" refX="10" refY="7" orient="auto">
+      <path d="M1 1L11 7L1 13" stroke="#4B5563" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <style>
+      .title { font: 700 32px 'Noto Sans SC', 'Microsoft YaHei', sans-serif; fill: #0F172A; }
+      .subtitle { font: 500 15px 'Noto Sans SC', 'Microsoft YaHei', sans-serif; fill: #475569; }
+      .section-title { font: 700 20px 'Noto Sans SC', 'Microsoft YaHei', sans-serif; fill: #0F172A; }
+      .stage-tag { font: 700 15px 'Noto Sans SC', 'Microsoft YaHei', sans-serif; fill: #FFFFFF; }
+      .box-title { font: 700 16px 'Noto Sans SC', 'Microsoft YaHei', sans-serif; fill: #0F172A; }
+      .box-text { font: 500 13px 'Noto Sans SC', 'Microsoft YaHei', sans-serif; fill: #334155; }
+      .small-text { font: 500 12px 'Noto Sans SC', 'Microsoft YaHei', sans-serif; fill: #475569; }
+      .output-text { font: 700 15px 'Noto Sans SC', 'Microsoft YaHei', sans-serif; fill: #14532D; }
+      .connector { stroke: #4B5563; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .soft-connector { stroke: #94A3B8; stroke-width: 1.8; fill: none; stroke-dasharray: 7 6; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1600" height="980" rx="24" fill="url(#bg)"/>
+
+  <text x="800" y="58" text-anchor="middle" class="title">PyFlowFusion 总体架构图</text>
+  <text x="800" y="86" text-anchor="middle" class="subtitle">面向 CPython 的数据流融合测试生成、执行与覆盖率验证流程</text>
+
+  <rect x="56" y="126" width="1488" height="160" rx="24" fill="#FFFFFF" stroke="#D7E2EE" filter="url(#shadow)"/>
+  <rect x="78" y="146" width="92" height="28" rx="14" fill="#2563EB"/>
+  <text x="124" y="165" text-anchor="middle" class="stage-tag">阶段 1</text>
+  <text x="188" y="166" class="section-title">离线准备与知识库构建</text>
+
+  <rect x="92" y="190" width="250" height="78" rx="16" fill="#EFF6FF" stroke="#BFDBFE"/>
+  <text x="217" y="218" text-anchor="middle" class="box-title">输入基础</text>
+  <text x="217" y="242" text-anchor="middle" class="box-text">CPython 源码树 / Lib/test / 覆盖率构建</text>
+
+  <rect x="390" y="190" width="250" height="78" rx="16" fill="#F8FAFC" stroke="#CBD5E1"/>
+  <text x="515" y="218" text-anchor="middle" class="box-title">prepare.py 预处理</text>
+  <text x="515" y="242" text-anchor="middle" class="box-text">复制测试种子到 py_seeds，复制依赖到 py_deps</text>
+
+  <rect x="688" y="190" width="250" height="78" rx="16" fill="#F8FAFC" stroke="#CBD5E1"/>
+  <text x="813" y="218" text-anchor="middle" class="box-title">knowledges/build.py</text>
+  <text x="813" y="242" text-anchor="middle" class="box-text">生成 class.db / apis.db / seeds.db</text>
+
+  <rect x="986" y="190" width="250" height="78" rx="16" fill="#ECFDF5" stroke="#A7F3D0"/>
+  <text x="1111" y="218" text-anchor="middle" class="box-title">结构化种子表示</text>
+  <text x="1111" y="242" text-anchor="middle" class="box-text">prelude / helpers / configuration / body / decorators</text>
+
+  <rect x="1284" y="190" width="222" height="78" rx="16" fill="#FFF7ED" stroke="#FED7AA"/>
+  <text x="1395" y="218" text-anchor="middle" class="box-title">离线产物</text>
+  <text x="1395" y="242" text-anchor="middle" class="box-text">py_seeds、py_deps、seeds.db</text>
+
+  <path d="M342 229H390" class="connector"/>
+  <path d="M640 229H688" class="connector"/>
+  <path d="M938 229H986" class="connector"/>
+  <path d="M1236 229H1284" class="connector"/>
+
+  <rect x="56" y="322" width="1488" height="246" rx="24" fill="#FFFFFF" stroke="#D7E2EE" filter="url(#shadow)"/>
+  <rect x="78" y="342" width="92" height="28" rx="14" fill="#0F766E"/>
+  <text x="124" y="361" text-anchor="middle" class="stage-tag">阶段 2</text>
+  <text x="188" y="362" class="section-title">在线融合测试生成</text>
+
+  <rect x="92" y="390" width="230" height="144" rx="18" fill="#F0FDFA" stroke="#99F6E4"/>
+  <text x="207" y="420" text-anchor="middle" class="box-title">种子选择与加载</text>
+  <text x="207" y="446" text-anchor="middle" class="box-text">从 seeds.db 惰性读取两个 Python 种子</text>
+  <text x="207" y="468" text-anchor="middle" class="small-text">description / phpcode / configuration / seed_ir</text>
+
+  <rect x="360" y="390" width="230" height="144" rx="18" fill="#F8FAFC" stroke="#CBD5E1"/>
+  <text x="475" y="420" text-anchor="middle" class="box-title">种子准备</text>
+  <text x="475" y="446" text-anchor="middle" class="box-text">属性重命名、类名修复、辅助函数映射</text>
+  <text x="475" y="468" text-anchor="middle" class="small-text">_prepare_python_seed()</text>
+
+  <rect x="628" y="390" width="230" height="144" rx="18" fill="#EFF6FF" stroke="#BFDBFE"/>
+  <text x="743" y="420" text-anchor="middle" class="box-title">数据流提取与桥接</text>
+  <text x="743" y="446" text-anchor="middle" class="box-text">PythonFastDataflow 分析变量组</text>
+  <text x="743" y="468" text-anchor="middle" class="small-text">选择安全源流和目标流，构造 _fusion</text>
+
+  <rect x="896" y="390" width="230" height="144" rx="18" fill="#F5F3FF" stroke="#C4B5FD"/>
+  <text x="1011" y="420" text-anchor="middle" class="box-title">类装配与装饰器处理</text>
+  <text x="1011" y="446" text-anchor="middle" class="box-text">FlowFusionTest、setUp/tearDown 包装</text>
+  <text x="1011" y="468" text-anchor="middle" class="small-text">decorator_runtime / class_assembly / composer</text>
+
+  <rect x="1164" y="390" width="170" height="144" rx="18" fill="#FEF2F2" stroke="#FECACA"/>
+  <text x="1249" y="420" text-anchor="middle" class="box-title">轻量变异</text>
+  <text x="1249" y="446" text-anchor="middle" class="box-text">运算符、整数、字符串、变量名</text>
+  <text x="1249" y="468" text-anchor="middle" class="small-text">低概率触发，增强边界探索</text>
+
+  <rect x="1372" y="390" width="134" height="144" rx="18" fill="#ECFCCB" stroke="#BEF264"/>
+  <text x="1439" y="420" text-anchor="middle" class="box-title">生成产物</text>
+  <text x="1439" y="446" text-anchor="middle" class="box-text">融合测试脚本</text>
+  <text x="1439" y="468" text-anchor="middle" class="small-text">tmp_dir / py_fused</text>
+
+  <path d="M322 462H360" class="connector"/>
+  <path d="M590 462H628" class="connector"/>
+  <path d="M858 462H896" class="connector"/>
+  <path d="M1126 462H1164" class="connector"/>
+  <path d="M1334 462H1372" class="connector"/>
+
+  <rect x="56" y="602" width="1488" height="206" rx="24" fill="#FFFFFF" stroke="#D7E2EE" filter="url(#shadow)"/>
+  <rect x="78" y="622" width="92" height="28" rx="14" fill="#7C3AED"/>
+  <text x="124" y="641" text-anchor="middle" class="stage-tag">阶段 3</text>
+  <text x="188" y="642" class="section-title">执行、反馈与覆盖率采样</text>
+
+  <rect x="94" y="672" width="250" height="102" rx="18" fill="#F8FAFC" stroke="#CBD5E1"/>
+  <text x="219" y="702" text-anchor="middle" class="box-title">覆盖率版 CPython 执行</text>
+  <text x="219" y="728" text-anchor="middle" class="box-text">main.py 调度运行融合样本</text>
+  <text x="219" y="750" text-anchor="middle" class="small-text">python-cov/python + unittest.main()</text>
+
+  <rect x="390" y="672" width="250" height="102" rx="18" fill="#FFF7ED" stroke="#FED7AA"/>
+  <text x="515" y="702" text-anchor="middle" class="box-title">失败分类与资源补齐</text>
+  <text x="515" y="728" text-anchor="middle" class="box-text">syntax / failure / crash / skip</text>
+  <text x="515" y="750" text-anchor="middle" class="small-text">hydrate_missing_resource() 按需复制资源</text>
+
+  <rect x="686" y="672" width="250" height="102" rx="18" fill="#EFF6FF" stroke="#BFDBFE"/>
+  <text x="811" y="702" text-anchor="middle" class="box-title">覆盖率采样</text>
+  <text x="811" y="728" text-anchor="middle" class="box-text">定时调用 gcovr 生成 XML 快照</text>
+  <text x="811" y="750" text-anchor="middle" class="small-text">read_line_rate() / coverage_24h.csv</text>
+
+  <rect x="982" y="672" width="250" height="102" rx="18" fill="#ECFDF5" stroke="#A7F3D0"/>
+  <text x="1107" y="702" text-anchor="middle" class="box-title">覆盖率分析</text>
+  <text x="1107" y="728" text-anchor="middle" class="box-text">与 Lib/test、libFuzzer 对照比较</text>
+  <text x="1107" y="750" text-anchor="middle" class="small-text">交集 / 差集 / 仅一侧覆盖区域分析</text>
+
+  <rect x="1278" y="672" width="228" height="102" rx="18" fill="#F0FDF4" stroke="#86EFAC"/>
+  <text x="1392" y="702" text-anchor="middle" class="box-title">最终输出</text>
+  <text x="1392" y="728" text-anchor="middle" class="output-text">覆盖率增长曲线、韦恩图与机制分析</text>
+  <text x="1392" y="750" text-anchor="middle" class="small-text">支撑毕业论文中的实验结果与讨论</text>
+
+  <path d="M344 723H390" class="connector"/>
+  <path d="M640 723H686" class="connector"/>
+  <path d="M936 723H982" class="connector"/>
+  <path d="M1232 723H1278" class="connector"/>
+
+  <path d="M1439 534V618" class="connector"/>
+  <path d="M1284 254C1284 300 1174 315 1174 356" class="soft-connector"/>
+  <path d="M1110 268C1110 312 1110 332 1110 356" class="soft-connector"/>
+  <path d="M219 774C219 850 515 850 515 788" class="soft-connector"/>
+  <path d="M515 774C515 850 811 850 811 788" class="soft-connector"/>
+  <path d="M811 774C811 850 1107 850 1107 788" class="soft-connector"/>
+
+  <rect x="84" y="868" width="1432" height="68" rx="18" fill="#FFFFFF" stroke="#D7E2EE"/>
+  <text x="110" y="895" class="box-title">图示说明</text>
+  <text x="110" y="920" class="box-text">PyFlowFusion 以 CPython 官方测试集为种子来源，经离线知识库构建与在线数据流融合生成新的可执行测试样本，再通过覆盖率版解释器执行并采集 gcovr 覆盖率结果，最终用于与 Lib/test 和 libFuzzer 的覆盖率比较分析。</text>
+</svg>

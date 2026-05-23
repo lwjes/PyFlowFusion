@@ -14,7 +14,7 @@ python build.py
 
 种子来源：
 
-- `seed-preprocessing.py` 会递归读取 `../py_seeds/`
+- `seed-preprocessing.py` 会递归读取 `workspace/py_seeds/`
 - 每个 `unittest.TestCase.test_*` 方法都会生成一个种子
 
 存储字段：

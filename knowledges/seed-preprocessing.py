@@ -471,7 +471,7 @@ def main():
     cursor.execute('DELETE FROM seeds')
 
     print('dataflow pre-processing')
-    collect_python_seeds('../py_seeds/', cursor)
+    collect_python_seeds(os.path.join(PROJECT_ROOT, 'workspace', 'py_seeds'), cursor)
 
     conn.commit()
     conn.close()

@@ -2,7 +2,7 @@ import os
 
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SHARED_CPYTHON_ROOT = os.path.join(os.path.dirname(PROJECT_ROOT), 'cpython')
+SHARED_CPYTHON_ROOT = os.path.dirname(PROJECT_ROOT)
 WORKSPACE_ROOT = os.path.join(PROJECT_ROOT, 'workspace')
 LOCAL_COVERAGE_ROOT = os.path.join(WORKSPACE_ROOT, 'python-cov')
 

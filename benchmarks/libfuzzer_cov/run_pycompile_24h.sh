@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-CPYTHON_SRC="$PROJECT_ROOT/../cpython/cpython-src"
+CPYTHON_SRC="$PROJECT_ROOT/../cpython-src"
 PY_LIBFUZZ_COV="$PROJECT_ROOT/benchmarks/libfuzzer_cov/python-cov"
 PY_COV_PY="$PROJECT_ROOT/benchmarks/libfuzzer_cov/python-cov/python"
 PYTHONHOME_FOR_FUZZ="$CPYTHON_SRC"

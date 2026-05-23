@@ -12,7 +12,7 @@ CXX="clang++" \
 CFLAGS="-fsanitize=address,undefined -fno-omit-frame-pointer -O0" \
 CXXFLAGS="-fsanitize=address,undefined -fno-omit-frame-pointer -O0" \
 LDFLAGS="-fsanitize=address,undefined -fno-omit-frame-pointer" \
-"$PROJECT_ROOT/../cpython/cpython-src/configure" \
+"$PROJECT_ROOT/../cpython-src/configure" \
   --with-pydebug \
   --without-pymalloc \
   --without-ensurepip

@@ -41,13 +41,20 @@ def run_testcase_once(
     timeout_seconds,
     subprocess_module=subprocess,
 ):
+    process_env = env
+    if env and env.get('FLOWFUSION_REAL_PYTHON_BIN'):
+        process_env = env.copy()
+        child_pythonpath = process_env.pop('PYTHONPATH', '')
+        if child_pythonpath:
+            process_env['FLOWFUSION_CHILD_PYTHONPATH'] = child_pythonpath
+
     proc = subprocess_module.run(
         [python_bin, testcase_path],
         capture_output=True,
         text=True,
         timeout=timeout_seconds,
         cwd=cwd,
-        env=env,
+        env=process_env,
     )
     output = (proc.stdout or '') + (proc.stderr or '')
     return output, proc.returncode

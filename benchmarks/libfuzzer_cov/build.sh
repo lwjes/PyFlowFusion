@@ -11,7 +11,7 @@ CXX="clang++" \
 CFLAGS="-O1 -g -fno-omit-frame-pointer -fsanitize=fuzzer-no-link" \
 CXXFLAGS="-O1 -g -fno-omit-frame-pointer -fsanitize=fuzzer-no-link" \
 LDFLAGS="-fsanitize=fuzzer-no-link" \
-"$PROJECT_ROOT/../cpython/cpython-src/configure" \
+"$PROJECT_ROOT/../cpython-src/configure" \
   --with-pydebug \
   --without-ensurepip \
   --disable-shared

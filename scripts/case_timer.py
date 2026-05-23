@@ -237,7 +237,7 @@ def main() -> int:
     fused_dir = env_path('FLOWFUSION_FUSED_DIR', workspace_root / 'py_fused')
     py_deps_dir = env_path('FLOWFUSION_PY_DEPS_DIR', workspace_root / 'py_deps')
     py_seeds_dir = env_path('FLOWFUSION_PY_SEEDS_DIR', workspace_root / 'py_seeds')
-    cpython_root = env_path('FLOWFUSION_CPYTHON_ROOT', root.parent / 'cpython' / 'cpython-src')
+    cpython_root = env_path('FLOWFUSION_CPYTHON_ROOT', root.parent / 'cpython-src')
     timeout_seconds = env_int('FLOWFUSION_CASE_TIMEOUT', 10)
     timeout_margin_ms = env_int('FLOWFUSION_TIMER_MARGIN_MS', DEFAULT_TIMEOUT_MARGIN_MS)
     max_hydration_attempts = env_int(
@@ -257,6 +257,11 @@ def main() -> int:
     attempts = int(state.get('attempts', 0)) + 1
 
     inner_timeout = max(0.1, timeout_seconds - (timeout_margin_ms / 1000.0))
+    child_env = os.environ.copy()
+    child_pythonpath = child_env.pop('FLOWFUSION_CHILD_PYTHONPATH', '')
+    if child_pythonpath:
+        child_env['PYTHONPATH'] = child_pythonpath
+
     proc = subprocess.Popen(
         [str(real_python), str(testcase_path), *extra_args],
         stdout=subprocess.PIPE,
@@ -264,6 +269,7 @@ def main() -> int:
         text=True,
         encoding='utf-8',
         errors='ignore',
+        env=child_env,
     )
 
     timed_out = False

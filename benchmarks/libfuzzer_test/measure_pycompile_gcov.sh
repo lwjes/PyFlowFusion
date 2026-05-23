@@ -3,7 +3,7 @@ set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 TEST_ROOT="$PROJECT_ROOT/benchmarks/libfuzzer_test"
-CPYTHON_SRC="$PROJECT_ROOT/../cpython/cpython-src"
+CPYTHON_SRC="$PROJECT_ROOT/../cpython-src"
 GCOV_BUILD_ROOT="$TEST_ROOT/python_cov"
 CORPUS_DIR="$PROJECT_ROOT/benchmarks/libfuzzer_cov/corpus"
 BIN_DIR="$TEST_ROOT/bin"

@@ -10,7 +10,7 @@ CXX="g++" \
 CFLAGS="-O0 -g --coverage -fprofile-arcs -ftest-coverage" \
 CXXFLAGS="-O0 -g --coverage -fprofile-arcs -ftest-coverage" \
 LDFLAGS="--coverage" \
-"$PROJECT_ROOT/../cpython/cpython-src/configure" \
+"$PROJECT_ROOT/../cpython-src/configure" \
   --with-pydebug \
   --without-ensurepip \
   --disable-shared

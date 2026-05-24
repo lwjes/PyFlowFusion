@@ -59,7 +59,6 @@ class Fusion(
         self.seeds = []
         self.temp_dir = config.paths.tmp_queue_dir
         self.pending_max_tmp = config.runtime.pending_max_tmp
-        self.fixme_blocklist_path = config.knowledge.fixme_blocklist
 
     def _tmp_backlog(self):
         backlog = 0
@@ -188,16 +187,14 @@ class Fusion(
                 continue
             filtered_records.append(record)
 
-        blocklist_rules = self._load_fixme_blocklist_rules()
-        dropped_blocklist_count = 0
-        if blocklist_rules:
-            keep_records = []
-            for record in filtered_records:
-                if self._record_matches_fixme_blocklist(record, blocklist_rules):
-                    dropped_blocklist_count += 1
-                    continue
-                keep_records.append(record)
-            filtered_records = keep_records
+        dropped_abstractmethod_count = 0
+        keep_records = []
+        for record in filtered_records:
+            if self._seed_uses_abstractmethod(record):
+                dropped_abstractmethod_count += 1
+                continue
+            keep_records.append(record)
+        filtered_records = keep_records
 
         if dropped_unresolved_count:
             print(
@@ -209,14 +206,14 @@ class Fusion(
                 '[FlowFusion] dropped '
                 f'{dropped_placeholder_count} non-runnable template seeds with placeholder contracts'
             )
-        if dropped_blocklist_count:
+        if dropped_abstractmethod_count:
             print(
                 '[FlowFusion] dropped '
-                f'{dropped_blocklist_count} seeds by fixme blocklist rules'
+                f'{dropped_abstractmethod_count} seeds using abstractmethod'
             )
 
         if not filtered_records:
-            raise RuntimeError('No Python seeds available after unresolved dependency filtering')
+            raise RuntimeError('No Python seeds available after filtering')
 
         self.seeds = filtered_records
 

@@ -50,18 +50,12 @@ class CoverageConfig:
 
 
 @dataclass(frozen=True)
-class KnowledgeConfig:
-    fixme_blocklist: str
-
-
-@dataclass(frozen=True)
 class FlowFusionConfig:
     config_path: str
     paths: PathsConfig
     cpython: CPythonConfig
     runtime: RuntimeConfig
     coverage: CoverageConfig
-    knowledge: KnowledgeConfig
 
 
 def _load_config_module(config_path):
@@ -158,24 +152,12 @@ def _build_config(config_path, raw_config):
         ),
     )
 
-    raw_knowledge = raw_config.get('knowledge', {})
-    knowledge = KnowledgeConfig(
-        fixme_blocklist=_resolve_path(
-            raw_knowledge.get(
-                'fixme_blocklist',
-                os.path.join(paths.knowledge_dir, 'fixme_blocklist.txt'),
-            ),
-            project_root,
-        ),
-    )
-
     return FlowFusionConfig(
         config_path=config_path,
         paths=paths,
         cpython=cpython,
         runtime=runtime,
         coverage=coverage,
-        knowledge=knowledge,
     )
 
 

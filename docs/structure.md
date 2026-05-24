@@ -74,7 +74,6 @@
 | `knowledges/function.py` | 构建 `apis.db` | 仓库存在即有；执行 `build.py` 时被调用 | `knowledges/build.py` |
 | `knowledges/class.py` | 构建 `class.db` | 仓库存在即有；执行 `build.py` 时被调用 | `knowledges/build.py` |
 | `knowledges/seed-preprocessing.py` | 种子预处理脚本，独立运行时可生成种子清单和摘要 | 仓库存在即有 | 手工运行或 `build.py` 间接调用 |
-| `knowledges/fixme_blocklist.txt` | `fixme` 规则黑名单 | 仓库存在即有 | 手工维护 |
 | `knowledges/README.md` | 知识库说明 | 仓库存在即有 | 手工维护 |
 | `knowledges/apis.db` | 函数与参数知识库 | 运行 `flowfusion.prepare` 或 `knowledges/build.py` 后 | `function.py` |
 | `knowledges/class.db` | 类、方法和属性知识库 | 运行 `flowfusion.prepare` 或 `knowledges/build.py` 后 | `class.py` |

@@ -1,4 +1,4 @@
-import os
+import ast
 import unittest
 
 
@@ -6,6 +6,76 @@ TESTCASE_MEMBER_NAMES = set(dir(unittest.TestCase))
 
 
 class SeedFilteringMixin:
+    def _seed_source_chunks(self, seed):
+        return [
+            seed.get('prelude', ''),
+            seed.get('helpers', ''),
+            seed.get('configuration', ''),
+            seed.get('phpcode', ''),
+        ]
+
+    def _collect_abstractmethod_aliases(self, seed):
+        abstractmethod_aliases = {'abstractmethod'}
+        abc_module_aliases = {'abc'}
+
+        for chunk in self._seed_source_chunks(seed):
+            if not chunk:
+                continue
+            try:
+                module = self._safe_parse_module(chunk)
+            except (SyntaxError, ValueError, TypeError, AttributeError):
+                continue
+            for stmt in module.body:
+                if isinstance(stmt, ast.ImportFrom) and stmt.module == 'abc':
+                    for alias in stmt.names:
+                        if alias.name == 'abstractmethod':
+                            abstractmethod_aliases.add(alias.asname or alias.name)
+                elif isinstance(stmt, ast.Import):
+                    for alias in stmt.names:
+                        if alias.name == 'abc':
+                            abc_module_aliases.add(alias.asname or alias.name)
+
+        return abstractmethod_aliases, abc_module_aliases
+
+    def _decorator_uses_abstractmethod(self, decorator, abstractmethod_aliases, abc_module_aliases):
+        if isinstance(decorator, ast.Name):
+            return decorator.id in abstractmethod_aliases
+        if (
+            isinstance(decorator, ast.Attribute)
+            and isinstance(decorator.value, ast.Name)
+            and decorator.value.id in abc_module_aliases
+            and decorator.attr == 'abstractmethod'
+        ):
+            return True
+        return False
+
+    def _seed_uses_abstractmethod(self, seed):
+        chunks = self._seed_source_chunks(seed)
+        if not any('abstractmethod' in (chunk or '').lower() for chunk in chunks):
+            return False
+
+        abstractmethod_aliases, abc_module_aliases = self._collect_abstractmethod_aliases(seed)
+        for chunk in chunks:
+            if not chunk:
+                continue
+            try:
+                module = self._safe_parse_module(chunk)
+            except (SyntaxError, ValueError, TypeError, AttributeError):
+                continue
+            for node in ast.walk(module):
+                if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                    continue
+                if any(
+                    self._decorator_uses_abstractmethod(
+                        decorator,
+                        abstractmethod_aliases,
+                        abc_module_aliases,
+                    )
+                    for decorator in node.decorator_list
+                ):
+                    return True
+        return False
+
     def _seed_unresolved_self_dependencies(self, seed):
         loaded = set()
         for chunk in [seed.get('helpers', ''), seed.get('configuration', ''), seed.get('phpcode', '')]:
@@ -60,55 +130,3 @@ class SeedFilteringMixin:
             or unresolved_notimplemented_methods
             or unresolved_notimplemented_properties
         )
-
-    def _default_fixme_blocklist_path(self):
-        return getattr(self, 'fixme_blocklist_path', '')
-
-    def _load_fixme_blocklist_rules(self):
-        path = self._default_fixme_blocklist_path()
-        if not path or not os.path.isfile(path):
-            return []
-
-        rules = []
-        with open(path, 'r', encoding='utf-8', errors='ignore') as handle:
-            for raw in handle:
-                line = raw.strip()
-                if not line or line.startswith('#'):
-                    continue
-                scope = 'any'
-                pattern = line
-                if ':' in line:
-                    prefix, rest = line.split(':', 1)
-                    normalized_prefix = prefix.strip().lower()
-                    if normalized_prefix in {'any', 'description', 'code'}:
-                        scope = normalized_prefix
-                        pattern = rest.strip()
-                if not pattern:
-                    continue
-                rules.append((scope, pattern.lower()))
-        return rules
-
-    def _record_matches_fixme_blocklist(self, record, rules):
-        if not rules:
-            return False
-
-        description_text = (record.get('description') or '').lower()
-        code_text = '\n'.join(
-            [
-                record.get('phpcode') or '',
-                record.get('configuration') or '',
-                record.get('helpers') or '',
-                record.get('prelude') or '',
-                record.get('skipif') or '',
-            ]
-        ).lower()
-        any_text = f'{description_text}\n{code_text}'
-
-        for scope, pattern in rules:
-            if scope == 'description' and pattern in description_text:
-                return True
-            if scope == 'code' and pattern in code_text:
-                return True
-            if scope == 'any' and pattern in any_text:
-                return True
-        return False

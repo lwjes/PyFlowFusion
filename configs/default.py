@@ -40,7 +40,4 @@ CONFIG = {
         'phase': '',
         'gcovr_root': os.path.join(SHARED_CPYTHON_ROOT, 'cpython-src'),
     },
-    'knowledge': {
-        'fixme_blocklist': os.path.join(PROJECT_ROOT, 'knowledges', 'fixme_blocklist.txt'),
-    },
 }

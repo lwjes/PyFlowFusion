@@ -29,10 +29,10 @@ CONFIG = {
         'mutation': True,
         'apifuzz': False,
         'ini': False,
-        'case_timeout': 10,
+        'case_timeout': 3,
         'pending_batch_size': 100,
         'pending_max_tmp': 200,
-        'pending_timeout': 30,
+        'pending_timeout': 120,
     },
     'coverage': {
         'interval': 1800,

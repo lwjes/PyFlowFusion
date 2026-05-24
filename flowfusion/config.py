@@ -45,6 +45,7 @@ class RuntimeConfig:
 class CoverageConfig:
     interval: int
     csv_path: str
+    snapshot_dir: str
     phase: str
     gcovr_root: str
 
@@ -145,6 +146,11 @@ def _build_config(config_path, raw_config):
     coverage = CoverageConfig(
         interval=max(0, int(raw_coverage.get('interval', 3600))),
         csv_path=_resolve_path(raw_coverage.get('csv_path', ''), project_root, allow_empty=True),
+        snapshot_dir=_resolve_path(
+            raw_coverage.get('snapshot_dir', ''),
+            project_root,
+            allow_empty=True,
+        ),
         phase=str(raw_coverage.get('phase', '')),
         gcovr_root=_resolve_path(
             raw_coverage.get('gcovr_root', cpython.source_root),

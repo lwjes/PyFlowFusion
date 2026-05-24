@@ -161,10 +161,11 @@
 | `workspace/fixme/` | 语法错误或普通失败样例目录 | 发现 syntax error / failure 后自动归档 | `flowfusion.main` |
 | `workspace/fixme/<n>/case.py` | 失败样例本体 | 发现失败后生成 | `flowfusion.main` |
 | `workspace/fixme/<n>/test.out` | 失败输出 | 发现失败后生成 | `flowfusion.main` |
-| `workspace/cov_record/` | 覆盖率记录目录 | 执行 `flowfusion.prepare` 初始化；执行 `scripts/run_cov_24h.sh` 时写入日志和汇总 | `flowfusion.prepare`、`scripts/run_cov_24h.sh` |
-| `workspace/cov_record/gcovr-*.xml` | 覆盖率快照 | 覆盖率长跑过程中按时间间隔生成 | `flowfusion.main` |
-| `workspace/cov_record/coverage_24h.csv` | 覆盖率 CSV 汇总 | 长跑结束或手工重建 CSV 时 | `scripts/run_cov_24h.sh`、`scripts/rebuild_coverage_csv.py` |
-| `workspace/cov_record/run_24h.log` | 覆盖率长跑日志 | 执行 `scripts/run_cov_24h.sh` 后 | `scripts/run_cov_24h.sh` |
+| `workspace/cov_record/` | 覆盖率记录根目录 | 执行 `flowfusion.prepare` 初始化；执行 `scripts/run_cov_24h.sh` 时创建时间戳子目录 | `flowfusion.prepare`、`scripts/run_cov_24h.sh` |
+| `workspace/cov_record/<run_id>/` | 单次覆盖率长跑结果目录 | 执行 `scripts/run_cov_24h.sh` 后 | `scripts/run_cov_24h.sh` |
+| `workspace/cov_record/<run_id>/gcovr_snapshots/gcovr-*.xml` | 覆盖率快照 | 覆盖率长跑过程中按时间间隔生成 | `flowfusion.main` |
+| `workspace/cov_record/<run_id>/coverage_24h.csv` | 覆盖率 CSV 汇总 | 长跑结束或手工重建 CSV 时 | `scripts/run_cov_24h.sh`、`scripts/rebuild_coverage_csv.py` |
+| `workspace/cov_record/<run_id>/run_24h.log` | 覆盖率长跑日志 | 执行 `scripts/run_cov_24h.sh` 后 | `scripts/run_cov_24h.sh` |
 | `workspace/san_record/` | sanitizer 记录目录 | 执行 `scripts/run_san_24h.sh` 后 | `scripts/run_san_24h.sh` |
 | `workspace/san_record/run_24h.log` | sanitizer 长跑日志 | 执行 `scripts/run_san_24h.sh` 后 | `scripts/run_san_24h.sh` |
 | `workspace/san_record/status.txt` | sanitizer 运行状态 | 运行开始和结束时更新 | `scripts/run_san_24h.sh` |

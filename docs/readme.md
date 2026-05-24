@@ -150,7 +150,7 @@ PyFlowFusion3 研究的是一套面向 CPython 测试场景的自动化模糊测
 
 - 输入：`workspace/py_seeds/`
 - 运行：`workspace/tmp_dir/`
-- 采样：`workspace/cov_record/`
+- 采样：`workspace/cov_record/<run_id>/gcovr_snapshots/`
 - 构建：`workspace/python-cov/`
 
 对应脚本：
@@ -160,9 +160,9 @@ PyFlowFusion3 研究的是一套面向 CPython 测试场景的自动化模糊测
 
 输出文件：
 
-- `workspace/cov_record/gcovr-*.xml`
-- `workspace/cov_record/coverage_24h.csv`
-- `workspace/cov_record/run_24h.log`
+- `workspace/cov_record/<run_id>/gcovr_snapshots/gcovr-*.xml`
+- `workspace/cov_record/<run_id>/coverage_24h.csv`
+- `workspace/cov_record/<run_id>/run_24h.log`
 
 ### 4.2 Sanitizer 实验
 

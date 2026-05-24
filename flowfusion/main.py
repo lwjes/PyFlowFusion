@@ -112,11 +112,13 @@ class PythonFuzz(BaseFuzz):
         self.fused_dir = config.paths.py_fused_dir
         self.py_deps_dir = config.paths.py_deps_dir
         self.py_seeds_dir = config.paths.py_seeds_dir
-        self.coverage_snapshot_dir = (
-            os.path.dirname(self.coverage_csv_path)
-            if self.coverage_csv_path
-            else self.tmp_dir
-        )
+        self.coverage_snapshot_dir = config.coverage.snapshot_dir
+        if not self.coverage_snapshot_dir:
+            self.coverage_snapshot_dir = (
+                os.path.dirname(self.coverage_csv_path)
+                if self.coverage_csv_path
+                else self.tmp_dir
+            )
         self.batch_no = 0
         self._fusion_throttled = False
         os.makedirs(self.fused_dir, exist_ok=True)

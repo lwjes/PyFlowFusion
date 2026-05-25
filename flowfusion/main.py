@@ -78,7 +78,14 @@ class BaseFuzz:
         except (OSError, ValueError):
             return
 
-    def runtime_log(self, seconds, pending_size=None, tmp_backlog=None, batch_no=None):
+    def runtime_log(
+        self,
+        seconds,
+        pending_size=None,
+        tmp_backlog=None,
+        batch_no=None,
+        batch_executed=None,
+    ):
         self._refresh_external_coverage()
         bugs_found = len(os.listdir(self.bug_folder))
         syntax_correct_rate = 1.0
@@ -90,6 +97,8 @@ class BaseFuzz:
             extra_parts.append(f'batch no: {batch_no}')
         if pending_size is not None:
             extra_parts.append(f'pending size: {pending_size}')
+        if batch_executed is not None and pending_size is not None:
+            extra_parts.append(f'pending executed: {batch_executed}/{pending_size}')
         if tmp_backlog is not None:
             extra_parts.append(f'tmp backlog: {tmp_backlog}')
         extra_log = f" | {' | '.join(extra_parts)}" if extra_parts else ''
@@ -304,6 +313,7 @@ class PythonFuzz(BaseFuzz):
             current_batch = self.batch_no
             current_pending_size = len(pending)
             batch_start = time.time()
+            current_batch_executed = 0
             for pending_case in pending:
                 if self.pending_timeout > 0 and time.time() - batch_start >= self.pending_timeout:
                     print(
@@ -315,12 +325,14 @@ class PythonFuzz(BaseFuzz):
                 if not testcase_path:
                     continue
                 self.execute_testcase(testcase_path)
+                current_batch_executed += 1
                 if self._stop_requested():
                     self.runtime_log(
                         time.time() - start,
                         pending_size=current_pending_size,
                         tmp_backlog=self._tmp_backlog(),
                         batch_no=current_batch,
+                        batch_executed=current_batch_executed,
                     )
 
             self.runtime_log(
@@ -328,6 +340,7 @@ class PythonFuzz(BaseFuzz):
                 pending_size=current_pending_size,
                 tmp_backlog=self._tmp_backlog(),
                 batch_no=current_batch,
+                batch_executed=current_batch_executed,
             )
 
 

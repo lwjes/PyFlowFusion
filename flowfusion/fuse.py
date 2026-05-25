@@ -187,13 +187,18 @@ class Fusion(
                 continue
             filtered_records.append(record)
 
+        dropped_bigmem_count = 0
         dropped_abstractmethod_count = 0
         keep_records = []
         for record in filtered_records:
-            if self._seed_uses_abstractmethod(record):
+            is_bigmem = self._seed_uses_bigmem(record)
+            is_abstractmethod = self._seed_uses_abstractmethod(record)
+            if is_bigmem:
+                dropped_bigmem_count += 1
+            if is_abstractmethod:
                 dropped_abstractmethod_count += 1
-                continue
-            keep_records.append(record)
+            if not (is_bigmem or is_abstractmethod):
+                keep_records.append(record)
         filtered_records = keep_records
 
         if dropped_unresolved_count:
@@ -205,6 +210,11 @@ class Fusion(
             print(
                 '[FlowFusion] dropped '
                 f'{dropped_placeholder_count} non-runnable template seeds with placeholder contracts'
+            )
+        if dropped_bigmem_count:
+            print(
+                '[FlowFusion] dropped '
+                f'{dropped_bigmem_count} seeds using bigmem rules'
             )
         if dropped_abstractmethod_count:
             print(

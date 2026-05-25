@@ -76,6 +76,17 @@ class SeedFilteringMixin:
                     return True
         return False
 
+    def _seed_uses_bigmem(self, seed):
+        chunks = [seed.get('description', '')] + self._seed_source_chunks(seed)
+        if not any(
+            marker in (chunk or '').lower()
+            for chunk in chunks
+            for marker in ('test_bigmem.py::', 'bigmemtest(', '_2g', '_4g')
+        ):
+            return False
+
+        return True
+
     def _seed_unresolved_self_dependencies(self, seed):
         loaded = set()
         for chunk in [seed.get('helpers', ''), seed.get('configuration', ''), seed.get('phpcode', '')]:
